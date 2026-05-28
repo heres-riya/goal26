@@ -35,8 +35,8 @@
             {% else %}
                 <form action="{{ url_for('submit_feedback') }}" method="post" class="feedback-form">
                     <input type="hidden" name="match_id" value="{{ match.id }}">
-                    <button type="submit" name="feedback" value="agree" class="feedback-btn agree-btn">👍 Agree</button>
-                    <button type="submit" name="feedback" value="disagree" class="feedback-btn disagree-btn">👎 Disagree</button>
+                    <button type="submit" name="feedback" value="agree" class="feedback-btn agree-btn" aria-label="Agree with this outlook">👍</button>
+                    <button type="submit" name="feedback" value="disagree" class="feedback-btn disagree-btn" aria-label="Disagree with this outlook">👎</button>
                 </form>
             {% endif %}
             {% if feedback_map.get(match.id) %}

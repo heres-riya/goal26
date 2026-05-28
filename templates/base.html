@@ -317,18 +317,18 @@
             margin-top: 14px;
             padding: 10px 12px;
             border-radius: 12px;
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: rgba(102, 126, 234, 0.08);
+            border: 1px solid rgba(102, 126, 234, 0.15);
         }
 
         .prediction-summary strong {
             display: block;
             margin-bottom: 4px;
-            color: #fff;
+            color: #1f2937;
         }
 
         .prediction-summary p {
-            color: #edf3ff;
+            color: #334155;
             font-size: 0.95rem;
         }
 
@@ -336,15 +336,15 @@
             margin-top: 12px;
             padding: 12px;
             border-radius: 12px;
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: rgba(102, 126, 234, 0.08);
+            border: 1px solid rgba(102, 126, 234, 0.15);
         }
 
         .feedback-label {
             font-size: 0.95rem;
             font-weight: 600;
             margin-bottom: 8px;
-            color: #f5f7ff;
+            color: #1f2937;
         }
 
         .feedback-form {
@@ -354,35 +354,38 @@
         }
 
         .feedback-btn {
-            flex: 1;
-            min-width: 120px;
-            padding: 10px 12px;
-            border: none;
-            border-radius: 10px;
-            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            border-radius: 999px;
+            border: 1px solid rgba(102, 126, 234, 0.25);
+            background: #fff;
+            color: #1f2937;
+            font-size: 1.1rem;
             cursor: pointer;
-            font-family: 'Poppins', sans-serif;
-            transition: transform 0.2s ease;
+            transition: transform 0.2s ease, background 0.2s ease;
+            box-shadow: 0 4px 10px rgba(15, 23, 42, 0.08);
         }
 
         .feedback-btn:hover {
             transform: translateY(-1px);
+            background: #f5f7ff;
         }
 
         .agree-btn {
-            background: #2ecc71;
-            color: #0d1b2a;
+            color: #15803d;
         }
 
         .disagree-btn {
-            background: #ff6b6b;
-            color: #fff;
+            color: #b91c1c;
         }
 
         .feedback-note {
             margin-top: 8px;
             font-size: 0.9rem;
-            color: #eaf2ff;
+            color: #334155;
         }
 
         @keyframes fadeInDown {
