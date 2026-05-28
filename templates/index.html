@@ -10,22 +10,6 @@
             <div class="match-date">{{ match.date }}</div>
             <div class="stadium">{{ match.stadium }}</div>
         </div>
-     {% set clean_game = namespace(value=True) %}
-
-    {% if '/' in match.team1 %}
-        {% set team1 = "Team1" %}
-        {% set clean_game.value = False %}
-    {% else %}
-        {% set team1 = match.team1 %}
-    {% endif %}
-
-    {% if '/' in match.team2 %}
-        {% set team2 = "Team2" %}
-        {% set clean_game.value = False %}
-    {% else %}
-        {% set team2 = match.team2 %}
-    {% endif %}
-
         <div class="teams-container">
             <div class="team">
                 <div class="team-flag">{{ match.team1_flag }}</div>
@@ -39,91 +23,26 @@
                 <div class="team-name">{{ match.team2 }}</div>
             </div>
         </div>
-    {% if match.win == 0 %}
-        {% set verdict = 0 %}
-    {% elif team1 == "Team1" or team2 == "Team2" %}
-        {% set verdict = 0 %}   
-    {% elif match.win >= match.draw and match.win >= match.loss %}
-        {% set verdict = 1 %}
-    {% elif match.draw >= match.win and match.draw >= match.loss %}
-        {% set verdict = 2 %}
-    {% else %}
-        {% set verdict = 3 %}
-    {% endif %}
+        <div class="prediction-summary">
+            <strong>Current match outlook</strong>
+            <p>Win: {{ match.win }}% · Draw: {{ match.draw }}% · Loss: {{ match.loss }}%</p>
+        </div>
 
-        <form id="form_{{ match.id }}" class="prediction-form" onsubmit="event.preventDefault(); submitPrediction({{ match.id }});">
-            <div class="prediction-buttons">
-                <button type="button" 
-                        class="predict-btn team1 
-
-                            {% if verdict == 1 %} predict-btn-yes {% endif %}
-
-                        {% if match.prediction == '1' %}selected{% endif %}" 
-                        data-match="{{ match.id }}" 
-                        data-prediction="1"
-                        onclick="selectPrediction({{ match.id }}, '1', this)"
-                        {% if match.prediction %}disabled{% endif %}>
-                    <span>{{ team1 }}</span>
-                </button>
-                <button type="button" 
-                        {% if verdict == 2 %}predict-btn-yes{% endif %}
-                        class="predict-btn draw
-                             {% if verdict == 2 %} predict-btn-yes {% endif %}
-                         {% if match.prediction == '3' %}selected{% endif %}" 
-                        data-match="{{ match.id }}" 
-                        data-prediction="3"
-                        onclick="selectPrediction({{ match.id }}, '3', this)"
-                        {% if match.prediction %}disabled{% endif %}>
-                    <span>Draw</span>
-                </button>
-                <button type="button" 
-                        {% if verdict == 3 %}predict-btn-yes{% endif %}
-                        class="predict-btn team2 
-                            {% if verdict == 3 %} predict-btn-yes {% endif %}
-                            {% if match.prediction == '2' %}selected{% endif %}" 
-                        data-match="{{ match.id }}" 
-                        data-prediction="2"
-                        onclick="selectPrediction({{ match.id }}, '2', this)"
-                        {% if match.prediction %}disabled{% endif %}>
-                    <span>{{ team2 }}</span>
-                </button>
-            </div>
-            {% if False %}
-            <button type="submit" 
-                    id="submit_{{ match.id }}" 
-                    class="submit-btn"
-                    {% if match.prediction %}disabled{% endif %}
-                    {% if not match.prediction %}disabled{% endif %}>
-                Submit and View
-            </button>
-            {% endif %}
-            <div> 
-            {% if verdict > 0 %}
-                Prediction: Win: {{ match.win }} | Draw: {{ match.draw }} | Loss: {{ match.loss }} 
+        <div class="feedback-box">
+            <p class="feedback-label">Do you agree with this outlook?</p>
+            {% if match.id in voted_matches %}
+                <p class="feedback-note">Thanks — you already voted on this match.</p>
             {% else %}
-                Prediction: Pending team assignment
+                <form action="{{ url_for('submit_feedback') }}" method="post" class="feedback-form">
+                    <input type="hidden" name="match_id" value="{{ match.id }}">
+                    <button type="submit" name="feedback" value="agree" class="feedback-btn agree-btn">👍 Agree</button>
+                    <button type="submit" name="feedback" value="disagree" class="feedback-btn disagree-btn">👎 Disagree</button>
+                </form>
             {% endif %}
-            </div>
-        </form>
-
-        {% if match.prediction %}
-            {% if match.actual_result is none %}
-                <div class="result-message pending">
-                    ⏳ Prediction Submitted! Match result pending...
-                </div>
-            {% elif match.prediction == match.actual_result %}
-                <div class="result-message correct">
-                    ✅ Correct! You predicted it right! 🎉
-                </div>
-            {% else %}
-                <div class="result-message incorrect">
-                    ❌ Wrong! The actual result was: 
-                    {% if match.actual_result == '1' %}{{ match.team1 }}
-                    {% elif match.actual_result == '2' %}{{ match.team2 }}
-                    {% else %}Draw{% endif %}
-                </div>
+            {% if feedback_map.get(match.id) %}
+                <p class="feedback-note">Current stored choice: {{ 'Agree' if feedback_map[match.id] == 'agree' else 'Disagree' }}</p>
             {% endif %}
-        {% endif %}
+        </div>
     </div>
     {% endfor %}
 </div>

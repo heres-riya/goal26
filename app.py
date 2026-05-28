@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, session
 from flask_sqlalchemy import SQLAlchemy
 import os
 from dotenv import load_dotenv
@@ -8,6 +8,7 @@ from datetime import datetime
 load_dotenv()
 
 app = Flask(__name__)
+app.secret_key = os.getenv('SECRET_KEY', 'goal26-dev-secret')
 MODEL_DIR = os.path.abspath(os.path.dirname(__file__))
 # Database configuration
 DATABASE_URL = os.getenv('DATABASE_URL')
@@ -40,23 +41,42 @@ class Match(db.Model):
     date = db.Column(db.String(255))
     match_number = db.Column(db.String(50), unique=True)
     team1 = db.Column(db.String(255))
-    team2 = db.Column(db.String(255))    
+    team2 = db.Column(db.String(255))
     group = db.Column(db.String(50))
     stadium = db.Column(db.String(255))
     date_dt = db.Column(db.Date)
     win = db.Column(db.Numeric(precision=5, scale=2))
     loss = db.Column(db.Numeric(precision=5, scale=2))
     draw = db.Column(db.Numeric(precision=5, scale=2))
-    
+
     def __repr__(self):
         return f'<Match {self.match_number}>'
 
+
+class MatchFeedback(db.Model):
+    __tablename__ = 'match_feedback'
+
+    id = db.Column(db.Integer, primary_key=True)
+    match_id = db.Column(db.Integer, db.ForeignKey('matches.id'), nullable=False)
+    feedback = db.Column(db.String(20), nullable=False)
+    created_at = db.Column(db.DateTime, server_default=db.func.now())
+
+    match = db.relationship('Match', backref=db.backref('feedbacks', lazy=True))
+
+    def __repr__(self):
+        return f'<MatchFeedback match_id={self.match_id} feedback={self.feedback}>'
+
 @app.route('/')
 def index():
-    """Display all players"""
+    """Display matches with the existing win/draw/loss percentages and user feedback options."""
     try:
         matches = Match.query.filter(Match.id < 83).order_by(Match.id).all()
-        return render_template('index.html', matches=matches)
+        feedback_map = {
+            item.match_id: item.feedback
+            for item in MatchFeedback.query.order_by(MatchFeedback.id).all()
+        }
+        voted_matches = set(session.get('voted_matches', []))
+        return render_template('index.html', matches=matches, feedback_map=feedback_map, voted_matches=voted_matches)
     except Exception as e:
         return f"<h1>Error fetching data</h1><p>{str(e)}</p>", 500
 
@@ -144,35 +164,29 @@ def initmatches():
         return f"<h1>❌ Error creating matches table</h1><p>{str(e)}</p>", 500
 
 
-@app.route('/submit-prediction', methods=['POST'])
-def submit_prediction():
-    match_id = request.form.get('match_id')
-    prediction = request.form.get('prediction')  # '1', '2', or '3'
-    
-    # Store prediction in session (in production, use database)
-    if 'predictions' not in session:
-        session['predictions'] = {}
-    
-    session['predictions'][match_id] = prediction
+@app.route('/submit-feedback', methods=['POST'])
+def submit_feedback():
+    match_id = request.form.get('match_id', type=int)
+    feedback = request.form.get('feedback')
+
+    if not match_id or feedback not in ('agree', 'disagree'):
+        return redirect('/')
+
+    voted_matches = set(session.get('voted_matches', []))
+    if match_id in voted_matches:
+        return redirect('/')
+
+    existing = MatchFeedback.query.filter_by(match_id=match_id).first()
+    if existing:
+        existing.feedback = feedback
+    else:
+        db.session.add(MatchFeedback(match_id=match_id, feedback=feedback))
+
+    db.session.commit()
+    voted_matches.add(match_id)
+    session['voted_matches'] = list(voted_matches)
     session.modified = True
-    
-    # Find the match and check result
-    match = next((m for m in matches_data if str(m['id']) == match_id), None)
-    
-    if not match:
-        return jsonify({'success': False, 'message': 'Match not found'})
-    
-    is_correct = None
-    if match['actual_result'] is not None:
-        is_correct = (prediction == match['actual_result'])
-    
-    return jsonify({
-        'success': True,
-        'is_correct': is_correct,
-        'actual_result': match['actual_result'],
-        'team1_name': match['team1'],
-        'team2_name': match['team2']
-    })
+    return redirect('/')
 
 if __name__ == '__main__':
     app.run(debug=True)
