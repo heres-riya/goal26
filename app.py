@@ -48,6 +48,8 @@ class Match(db.Model):
     win = db.Column(db.Numeric(precision=5, scale=2))
     loss = db.Column(db.Numeric(precision=5, scale=2))
     draw = db.Column(db.Numeric(precision=5, scale=2))
+    team1_flag = db.Column(db.String(100))
+    team2_flag = db.Column(db.String(100))
 
     def __repr__(self):
         return f'<Match {self.match_number}>'
