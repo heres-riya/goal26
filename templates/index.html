@@ -37,7 +37,23 @@
         </div>
         <div class="prediction-summary">
             <strong>Current match outlook</strong>
-            <p>Win: {{ match.win }}% · Draw: {{ match.draw }}% · Loss: {{ match.loss }}%</p>
+            <div class="outlook-grid">
+                <div class="outlook-pill">
+                    {% if match.team1_flag_url %}
+                        <img src="{{ match.team1_flag_url }}" alt="{{ match.team1 }} flag" class="team-flag-icon outlook-flag">
+                    {% endif %}
+                    <span>Win {{ match.win }}%</span>
+                </div>
+                <div class="outlook-pill outlook-pill--draw">
+                    <span>Draw {{ match.draw }}%</span>
+                </div>
+                <div class="outlook-pill">
+                    {% if match.team2_flag_url %}
+                        <img src="{{ match.team2_flag_url }}" alt="{{ match.team2 }} flag" class="team-flag-icon outlook-flag">
+                    {% endif %}
+                    <span>Loss {{ match.loss }}%</span>
+                </div>
+            </div>
         </div>
 
         <div class="feedback-box">
