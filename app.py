@@ -108,6 +108,7 @@ class MatchFeedback(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     match_id = db.Column(db.Integer, db.ForeignKey('matches.id'), nullable=False)
     feedback = db.Column(db.String(20), nullable=False)
+    ip_address = db.Column(db.String(45), nullable=True)
     created_at = db.Column(db.DateTime, server_default=db.func.now())
 
     match = db.relationship('Match', backref=db.backref('feedbacks', lazy=True))
@@ -162,6 +163,9 @@ def submit_feedback():
     if not match_id or feedback not in ('agree', 'disagree'):
         return redirect('/')
 
+    forwarded_for = request.headers.get('X-Forwarded-For')
+    ip_address = forwarded_for.split(',')[0].strip() if forwarded_for else request.remote_addr
+
     voted_matches = set(session.get('voted_matches', []))
     if match_id in voted_matches:
         return redirect('/')
@@ -169,8 +173,9 @@ def submit_feedback():
     existing = MatchFeedback.query.filter_by(match_id=match_id).first()
     if existing:
         existing.feedback = feedback
+        existing.ip_address = ip_address
     else:
-        db.session.add(MatchFeedback(match_id=match_id, feedback=feedback))
+        db.session.add(MatchFeedback(match_id=match_id, feedback=feedback, ip_address=ip_address))
 
     db.session.commit()
     voted_matches.add(match_id)
