@@ -60,7 +60,7 @@
         <div class="feedback-box">
             <p class="feedback-label">Do you agree?</p>
             {% if match.id in voted_matches %}
-                <p class="feedback-note">Thanks — you already voted on this match.</p>
+                <p class="feedback-note">Thanks. Your input will improve our next model</p>
             {% else %}
                 <form action="{{ url_for('submit_feedback') }}" method="post" class="feedback-form">
                     <input type="hidden" name="match_id" value="{{ match.id }}">
