@@ -12,14 +12,26 @@
         </div>
         <div class="teams-container">
             <div class="team">
-                <div class="team-flag">{{ match.team1_flag }}</div>
+                <div class="team-flag">
+                    {% if match.team1_flag_url %}
+                        <img src="{{ match.team1_flag_url }}" alt="{{ match.team1 }} flag" class="team-flag-icon" />
+                    {% else %}
+                        {{ match.team1_flag or '🏳️' }}
+                    {% endif %}
+                </div>
                 <div class="team-name">{{ match.team1 }}</div>
             </div>
             
             <div class="vs">VS</div>
             
             <div class="team">
-                <div class="team-flag">{{ match.team2_flag }}</div>
+                <div class="team-flag">
+                    {% if match.team2_flag_url %}
+                        <img src="{{ match.team2_flag_url }}" alt="{{ match.team2 }} flag" class="team-flag-icon" />
+                    {% else %}
+                        {{ match.team2_flag or '🏳️' }}
+                    {% endif %}
+                </div>
                 <div class="team-name">{{ match.team2 }}</div>
             </div>
         </div>

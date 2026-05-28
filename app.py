@@ -20,6 +20,57 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 
+COUNTRY_FLAGS = {
+    "Mexico": "https://hatscripts.github.io/circle-flags/flags/mx.svg",
+    "South Africa": "https://hatscripts.github.io/circle-flags/flags/za.svg",
+    "Korea Republic": "https://hatscripts.github.io/circle-flags/flags/kr.svg",
+    "Czechia": "https://hatscripts.github.io/circle-flags/flags/cz.svg",
+    "Canada": "https://hatscripts.github.io/circle-flags/flags/ca.svg",
+    "Bosnia and Herzegovina": "https://hatscripts.github.io/circle-flags/flags/ba.svg",
+    "USA": "https://hatscripts.github.io/circle-flags/flags/us.svg",
+    "Paraguay": "https://hatscripts.github.io/circle-flags/flags/py.svg",
+    "Haiti": "https://hatscripts.github.io/circle-flags/flags/ht.svg",
+    "Scotland": "https://hatscripts.github.io/circle-flags/flags/gb-sct.svg",
+    "Australia": "https://hatscripts.github.io/circle-flags/flags/au.svg",
+    "Türkiye": "https://hatscripts.github.io/circle-flags/flags/tr.svg",
+    "Brazil": "https://hatscripts.github.io/circle-flags/flags/br.svg",
+    "Morocco": "https://hatscripts.github.io/circle-flags/flags/ma.svg",
+    "Qatar": "https://hatscripts.github.io/circle-flags/flags/qa.svg",
+    "Switzerland": "https://hatscripts.github.io/circle-flags/flags/ch.svg",
+    "Côte d'Ivoire": "https://hatscripts.github.io/circle-flags/flags/ci.svg",
+    "Ecuador": "https://hatscripts.github.io/circle-flags/flags/ec.svg",
+    "Germany": "https://hatscripts.github.io/circle-flags/flags/de.svg",
+    "Curaçao": "https://hatscripts.github.io/circle-flags/flags/cw.svg",
+    "Netherlands": "https://hatscripts.github.io/circle-flags/flags/nl.svg",
+    "Japan": "https://hatscripts.github.io/circle-flags/flags/jp.svg",
+    "Sweden": "https://hatscripts.github.io/circle-flags/flags/se.svg",
+    "Tunisia": "https://hatscripts.github.io/circle-flags/flags/tn.svg",
+    "Uruguay": "https://hatscripts.github.io/circle-flags/flags/uy.svg",
+    "Spain": "https://hatscripts.github.io/circle-flags/flags/es.svg",
+    "Cabo Verde": "https://hatscripts.github.io/circle-flags/flags/cv.svg",
+    "Saudi Arabia": "https://hatscripts.github.io/circle-flags/flags/sa.svg",
+    "IR Iran": "https://hatscripts.github.io/circle-flags/flags/ir.svg",
+    "New Zealand": "https://hatscripts.github.io/circle-flags/flags/nz.svg",
+    "Belgium": "https://hatscripts.github.io/circle-flags/flags/be.svg",
+    "Egypt": "https://hatscripts.github.io/circle-flags/flags/eg.svg",
+    "France": "https://hatscripts.github.io/circle-flags/flags/fr.svg",
+    "Senegal": "https://hatscripts.github.io/circle-flags/flags/sn.svg",
+    "Iraq": "https://hatscripts.github.io/circle-flags/flags/iq.svg",
+    "Norway": "https://hatscripts.github.io/circle-flags/flags/no.svg",
+    "Argentina": "https://hatscripts.github.io/circle-flags/flags/ar.svg",
+    "Algeria": "https://hatscripts.github.io/circle-flags/flags/dz.svg",
+    "Austria": "https://hatscripts.github.io/circle-flags/flags/at.svg",
+    "Jordan": "https://hatscripts.github.io/circle-flags/flags/jo.svg",
+    "Ghana": "https://hatscripts.github.io/circle-flags/flags/gh.svg",
+    "Panama": "https://hatscripts.github.io/circle-flags/flags/pa.svg",
+    "Croatia": "https://hatscripts.github.io/circle-flags/flags/hr.svg",
+    "Portugal": "https://hatscripts.github.io/circle-flags/flags/pt.svg",
+    "DR Congo": "https://hatscripts.github.io/circle-flags/flags/cd.svg",
+    "Uzbekistan": "https://hatscripts.github.io/circle-flags/flags/uz.svg",
+    "Colombia": "https://hatscripts.github.io/circle-flags/flags/co.svg",
+    "England": "https://hatscripts.github.io/circle-flags/flags/gb-eng.svg",
+}
+
 # Define Player model
 class Player(db.Model):
     __tablename__ = 'players'
@@ -71,6 +122,10 @@ def index():
     """Display matches with the existing win/draw/loss percentages and user feedback options."""
     try:
         matches = Match.query.filter(Match.id < 83).order_by(Match.id).all()
+        for match in matches:
+            match.team1_flag_url = COUNTRY_FLAGS.get(match.team1)
+            match.team2_flag_url = COUNTRY_FLAGS.get(match.team2)
+
         feedback_map = {
             item.match_id: item.feedback
             for item in MatchFeedback.query.order_by(MatchFeedback.id).all()
