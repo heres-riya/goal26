@@ -39,9 +39,7 @@
                     <button type="submit" name="feedback" value="disagree" class="feedback-btn disagree-btn" aria-label="Disagree with this outlook">👎</button>
                 </form>
             {% endif %}
-            {% if feedback_map.get(match.id) %}
-                <p class="feedback-note">Current stored choice: {{ 'Agree' if feedback_map[match.id] == 'agree' else 'Disagree' }}</p>
-            {% endif %}
+
         </div>
     </div>
     {% endfor %}
