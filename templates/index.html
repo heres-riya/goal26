@@ -36,18 +36,19 @@
             </div>
         </div>
         <div class="prediction-summary">
-            <strong>Current match outlook</strong>
+            <strong>Model Prediction</strong>
+            {% set highest_outcome = 'win' if (match.win|float >= match.draw|float and match.win|float >= match.loss|float) else 'draw' if (match.draw|float >= match.loss|float) else 'loss' %}
             <div class="outlook-grid">
-                <div class="outlook-pill">
+                <div class="outlook-pill{% if highest_outcome == 'win' %} outlook-pill--selected{% endif %}">
                     {% if match.team1_flag_url %}
                         <img src="{{ match.team1_flag_url }}" alt="{{ match.team1 }} flag" class="team-flag-icon outlook-flag">
                     {% endif %}
                     <span>Win {{ match.win }}%</span>
                 </div>
-                <div class="outlook-pill outlook-pill--draw">
+                <div class="outlook-pill outlook-pill--draw{% if highest_outcome == 'draw' %} outlook-pill--selected{% endif %}">
                     <span>Draw {{ match.draw }}%</span>
                 </div>
-                <div class="outlook-pill">
+                <div class="outlook-pill{% if highest_outcome == 'loss' %} outlook-pill--selected{% endif %}">
                     {% if match.team2_flag_url %}
                         <img src="{{ match.team2_flag_url }}" alt="{{ match.team2 }} flag" class="team-flag-icon outlook-flag">
                     {% endif %}
