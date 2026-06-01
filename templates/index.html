@@ -6,7 +6,7 @@
 <div class="matches-grid">
     {% set ns = namespace(prev_group=None) %}
     {% for match in matches %}
-    {% if match.group != ns.prev_group %}
+    {% if match.group != ns.prev_group and not match.group_is_group %}
     <div class="group-heading">{{ match.group }}</div>
     {% set ns.prev_group = match.group %}
     {% endif %}
