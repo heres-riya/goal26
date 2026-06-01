@@ -37,7 +37,11 @@
         </div>
         <div class="prediction-summary">
             <strong>Model Prediction</strong>
-            {% set highest_outcome = 'win' if (match.win|float >= match.draw|float and match.win|float >= match.loss|float) else 'draw' if (match.draw|float >= match.loss|float) else 'loss' %}
+            {% if match.group|default('')|trim == '' %}
+                {% set highest_outcome = 'win' if (match.win|float >= match.loss|float) else 'loss' %}
+            {% else %}
+                {% set highest_outcome = 'win' if (match.win|float >= match.draw|float and match.win|float >= match.loss|float) else 'draw' if (match.draw|float >= match.loss|float) else 'loss' %}
+            {% endif %}
             <div class="outlook-grid">
                 <div class="outlook-pill{% if highest_outcome == 'win' %} outlook-pill--selected{% endif %}">
                     {% if match.team1_flag_url %}
