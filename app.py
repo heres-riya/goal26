@@ -120,7 +120,7 @@ class MatchFeedback(db.Model):
 def index():
     """Display matches with the existing win/draw/loss percentages and user feedback options."""
     try:
-        matches = Match.query.filter(Match.id < 99).order_by(Match.id).all()
+        matches = Match.query.filter(Match.id < 108).order_by(Match.id).all()
         for match in matches:
             match.team1_flag_url = COUNTRY_FLAGS.get(match.team1)
             match.team2_flag_url = COUNTRY_FLAGS.get(match.team2)
