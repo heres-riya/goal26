@@ -9,7 +9,7 @@
         <div class="match-info">
             <div class="match-date">
                 {{ match.date_dt.strftime('%a, %d %b %Y') if match.date_dt else match.date }}
-                · M{{ match.match_number }}
+                · {{ match.match_number }}
                 {% if match.group_is_group %}
                     ·  {{ match.group }}
                 {% endif %}
