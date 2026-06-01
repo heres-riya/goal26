@@ -9,7 +9,7 @@
         <div class="match-info">
             <div class="match-date">
                 {{ match.date_dt.strftime('%a, %d %b %Y') if match.date_dt else match.date }}
-                {% if match.group|default('')|trim != '' %}
+                {% if match.group|default('')|trim[:5] == 'Group' %}
                     ·  {{ match.group }}
                 {% endif %}
             </div>
@@ -42,7 +42,7 @@
         </div>
         <div class="prediction-summary">
             <strong>Model Prediction</strong>
-            {% if match.group|default('')|trim == '' %}
+            {% if match.group|default('')|trim[:5] != 'Group' %}
                 {% set highest_outcome = 'win' if (match.win|float >= match.loss|float) else 'loss' %}
             {% else %}
                 {% set highest_outcome = 'win' if (match.win|float >= match.draw|float and match.win|float >= match.loss|float) else 'draw' if (match.draw|float >= match.loss|float) else 'loss' %}
