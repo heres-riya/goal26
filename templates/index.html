@@ -10,7 +10,7 @@
             <div class="match-date">
                 {{ match.date_dt.strftime('%a, %d %b %Y') if match.date_dt else match.date }}
                 {% if match.group|default('')|trim != '' %}
-                    · Group {{ match.group }}
+                    ·  {{ match.group }}
                 {% endif %}
             </div>
             <div class="stadium">{{ match.stadium }}</div>
