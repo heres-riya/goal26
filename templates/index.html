@@ -7,7 +7,7 @@
     {% set ns = namespace(prev_group=None) %}
     {% for match in matches %}
     {% if match.group != ns.prev_group and not match.group_is_group %}
-    <div class="group-heading">{{ match.group }}</div>
+    <div class="group-heading" style="grid-column: 1 / -1; background: linear-gradient(to right, #1a1a1a 0%, #2a2a2a 50%, #1a1a1a 100%); padding: 20px; margin: 20px 0 10px 0; text-align: center; font-size: 24px; font-weight: bold; color: #fff; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">{{ match.group }}</div>
     {% set ns.prev_group = match.group %}
     {% endif %}
     <div class="match-card {% if match.prediction %}submitted{% endif %} {% if match.prediction and match.actual_result %}{% if match.prediction == match.actual_result %}correct{% else %}incorrect{% endif %}{% endif %}">
@@ -91,6 +91,6 @@
     {% endfor %}
 </div>
 <div style="text-align: center; margin-top: 20px; color: #999; font-size: 12px;">
-    Version 1
+    Version 2
 </div>
 {% endblock %}
