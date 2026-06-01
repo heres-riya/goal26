@@ -7,7 +7,12 @@
     {% for match in matches %}
     <div class="match-card {% if match.prediction %}submitted{% endif %} {% if match.prediction and match.actual_result %}{% if match.prediction == match.actual_result %}correct{% else %}incorrect{% endif %}{% endif %}">
         <div class="match-info">
-            <div class="match-date">{{ match.date }}</div>
+            <div class="match-date">
+                {{ match.date_dt.strftime('%a, %d %b %Y') if match.date_dt else match.date }}
+                {% if match.group|default('')|trim != '' %}
+                    · Group {{ match.group }}
+                {% endif %}
+            </div>
             <div class="stadium">{{ match.stadium }}</div>
         </div>
         <div class="teams-container">
