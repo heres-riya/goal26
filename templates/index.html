@@ -4,7 +4,12 @@
 
 {% block content %}
 <div class="matches-grid">
+    {% set ns = namespace(prev_group=None) %}
     {% for match in matches %}
+    {% if match.group != ns.prev_group %}
+    <div class="group-heading">{{ match.group }}</div>
+    {% set ns.prev_group = match.group %}
+    {% endif %}
     <div class="match-card {% if match.prediction %}submitted{% endif %} {% if match.prediction and match.actual_result %}{% if match.prediction == match.actual_result %}correct{% else %}incorrect{% endif %}{% endif %}">
         <div class="match-info">
             <div class="match-date">
