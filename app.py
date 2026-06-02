@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, session
+from flask import Flask, render_template, request, redirect, session, abort
 from flask_sqlalchemy import SQLAlchemy
 import os
 from dotenv import load_dotenv
@@ -133,8 +133,10 @@ class Article(db.Model):
 
 @app.route('/')
 def index():
-    """Display matches with the existing win/draw/loss percentages and user feedback options."""
+    """Display the homepage with published articles plus match predictions."""
     try:
+        articles = Article.query.filter_by(published=True).order_by(Article.created_at.desc()).limit(5).all()
+
         matches = Match.query.filter(Match.id < 208).order_by(Match.id).all()
         for match in matches:
             match.team1_flag_url = COUNTRY_FLAGS.get(match.team1)
@@ -146,9 +148,17 @@ def index():
             for item in MatchFeedback.query.order_by(MatchFeedback.id).all()
         }
         voted_matches = set(session.get('voted_matches', []))
-        return render_template('index.html', matches=matches, feedback_map=feedback_map, voted_matches=voted_matches)
+        return render_template('index.html', articles=articles, matches=matches, feedback_map=feedback_map, voted_matches=voted_matches)
     except Exception as e:
         return f"<h1>Error fetching data</h1><p>{str(e)}</p>", 500
+
+
+@app.route('/article/<slug>')
+def article_detail(slug):
+    article = Article.query.filter_by(slug=slug, published=True).first()
+    if not article:
+        abort(404)
+    return render_template('article_detail.html', article=article)
 
 @app.route('/create', methods=['GET', 'POST'])
 def create_player():
