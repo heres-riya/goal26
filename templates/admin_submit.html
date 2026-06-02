@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Submit Article{% endblock %}
+
+{% block content %}
+<h2>Submit Article (Admin)</h2>
+
+<form method="POST" style="max-width:800px;">
+  <div style="margin-bottom:12px;">
+    <label style="font-weight:bold">Password</label>
+    <input type="password" name="password" required style="width:100%; padding:8px;">
+  </div>
+
+  <div style="margin-bottom:12px;">
+    <label style="font-weight:bold">Title</label>
+    <input type="text" name="title" required style="width:100%; padding:8px;">
+  </div>
+
+  <div style="margin-bottom:12px;">
+    <label style="font-weight:bold">Slug (url-friendly)</label>
+    <input type="text" name="slug" required style="width:100%; padding:8px;">
+  </div>
+
+  <div style="margin-bottom:12px;">
+    <label style="font-weight:bold">Published</label>
+    <select name="published" style="padding:8px;">
+      <option value="1">Yes</option>
+      <option value="0" selected>No</option>
+    </select>
+  </div>
+
+  <div style="margin-bottom:12px;">
+    <label style="font-weight:bold">Body (HTML)</label>
+    <textarea name="body" rows="12" style="width:100%; padding:8px;"></textarea>
+  </div>
+
+  <button type="submit" style="background:#667eea; color:#fff; padding:10px 20px; border:none; border-radius:4px;">Submit Article</button>
+</form>
+
+{% endblock %}

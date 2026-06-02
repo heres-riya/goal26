@@ -116,6 +116,21 @@ class MatchFeedback(db.Model):
     def __repr__(self):
         return f'<MatchFeedback match_id={self.match_id} feedback={self.feedback}>'
 
+
+# Define Article model for blog posts (kept simple)
+class Article(db.Model):
+    __tablename__ = 'articles'
+
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(255), nullable=False)
+    slug = db.Column(db.String(255), unique=True, nullable=False)
+    body = db.Column(db.Text)
+    published = db.Column(db.Boolean, default=False)
+    created_at = db.Column(db.DateTime, server_default=db.func.now())
+
+    def __repr__(self):
+        return f'<Article {self.slug}>'
+
 @app.route('/')
 def index():
     """Display matches with the existing win/draw/loss percentages and user feedback options."""
@@ -155,6 +170,50 @@ def create_player():
             return f"<h1>Error creating player</h1><p>{str(e)}</p>", 500
     
     return render_template('create.html')
+
+
+@app.route('/admin/submit', methods=['GET', 'POST'])
+def admin_submit():
+    """Password-protected article submission form.
+
+    Protect the form using the `ADMIN_PASSWORD` environment variable.
+    """
+    # NOTE: intentionally hardcoded per user request
+    ADMIN_PASSWORD = 'goal26Article'
+
+    if request.method == 'POST':
+        # simple password check
+        provided = request.form.get('password')
+        if not ADMIN_PASSWORD or provided != ADMIN_PASSWORD:
+            return "<h1>Forbidden</h1><p>Invalid password.</p>", 403
+
+        # collect fields (kept minimal)
+        title = request.form.get('title')
+        slug = request.form.get('slug')
+        body = request.form.get('body')
+        published = bool(int(request.form.get('published', '0')))
+
+        # ensure slug uniqueness
+        existing = Article.query.filter_by(slug=slug).first()
+        if existing:
+            return f"<h1>Conflict</h1><p>Slug '{slug}' already exists.</p>", 409
+
+        try:
+            article = Article(
+                title=title,
+                slug=slug,
+                body=body,
+                published=published,
+            )
+            db.session.add(article)
+            db.session.commit()
+            return redirect('/')
+        except Exception as e:
+            db.session.rollback()
+            return f"<h1>Error</h1><p>{str(e)}</p>", 500
+
+    # GET: render the admin submit form; password field will be entered by admin
+    return render_template('admin_submit.html')
 
 @app.route('/submit-feedback', methods=['POST'])
 def submit_feedback():
