@@ -158,7 +158,7 @@ def article_detail(slug):
     article = Article.query.filter_by(slug=slug, published=True).first()
     if not article:
         abort(404)
-    return render_template('article_detail.html', article=article)
+    return render_template('article_detail.html', article=article, hide_banner=True)
 
 @app.route('/create', methods=['GET', 'POST'])
 def create_player():

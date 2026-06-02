@@ -511,6 +511,7 @@
                 Project Goal26: soccer predictions using data science/ AI
                 <a href="https://forms.gle/464LpET59ZuV1kK98" style="color: #FFFFFF; text-decoration: none; font-weight: bold;">[ Register for Zoom AI Class]</a>
             </p>
+            {% if not hide_banner %}
             <div class="banner-section" style="margin-top: 20px; text-align: center;">
                 <a href="https://forms.gle/464LpET59ZuV1kK98" style="display: inline-block; text-decoration: none;">
                     <img src="{{ url_for('static', filename='fifaZoom.png') }}" alt="FIFA Zoom Banner" style="max-width: 100%; height: auto; border-radius: 10px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);">
@@ -522,6 +523,7 @@
                     I am a high school student who loves soccer. I built an AI model to predict Fifa 2026 results using various features. I will really appreciate if you share if you agree or disagree with the results, so that I can use this input to further improve the model.
                 </div>
             </div>
+            {% endif %}
         </header>
         {% block content %}{% endblock %}
     </div>
