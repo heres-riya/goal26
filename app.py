@@ -1,5 +1,7 @@
 from flask import Flask, render_template, request, redirect, session, abort
 from flask_sqlalchemy import SQLAlchemy
+import markdown
+from markupsafe import Markup
 import os
 from dotenv import load_dotenv
 
@@ -158,7 +160,14 @@ def article_detail(slug):
     article = Article.query.filter_by(slug=slug, published=True).first()
     if not article:
         abort(404)
-    return render_template('article_detail.html', article=article, hide_banner=True)
+
+    article_body_html = Markup(markdown.markdown(
+        article.body or '',
+        extensions=['extra', 'sane_lists'],
+        output_format='html5'
+    ))
+
+    return render_template('article_detail.html', article=article, article_body_html=article_body_html, hide_banner=True)
 
 @app.route('/create', methods=['GET', 'POST'])
 def create_player():
