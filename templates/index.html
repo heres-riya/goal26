@@ -10,10 +10,8 @@
         {% for article in articles %}
         <article class="article-card">
             <a href="{{ url_for('article_detail', slug=article.slug) }}" class="article-card-link">
-                <p class="article-badge" style="margin-bottom: 10px; font-size: 0.75rem;">Featured story</p>
                 <h3 style="margin-bottom: 10px; font-size: 1.35rem;">{{ article.title }}</h3>
             </a>
-            <a href="{{ url_for('article_detail', slug=article.slug) }}" class="article-card-label">Read article →</a>
         </article>
         {% endfor %}
     </div>
