@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, session, abort
+from flask import Flask, render_template, request, redirect, session, abort, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 import markdown
 from markupsafe import Markup
@@ -153,6 +153,11 @@ def index():
         return render_template('index.html', articles=articles, matches=matches, feedback_map=feedback_map, voted_matches=voted_matches)
     except Exception as e:
         return f"<h1>Error fetching data</h1><p>{str(e)}</p>", 500
+
+
+@app.route('/download-model')
+def download_model():
+    return send_from_directory('static', 'goal26_trained_model.pkl', as_attachment=True)
 
 
 @app.route('/article/<slug>')
