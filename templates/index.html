@@ -8,12 +8,14 @@
     <h2 style="color: #fff; margin-bottom: 20px;">Latest Articles</h2>
     <div class="articles-grid" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap:20px;">
         {% for article in articles %}
-        <div class="article-card" style="background: rgba(255,255,255,0.9); border-radius:18px; padding:20px; box-shadow:0 10px 30px rgba(0,0,0,0.15); overflow-wrap: break-word; word-break: break-word;">
-            <a href="{{ url_for('article_detail', slug=article.slug) }}" style="text-decoration:none; color:#1a1a1a;">
-                <h3 style="margin-bottom: 12px; font-size: 1.35rem;">{{ article.title }}</h3>
+        <article class="article-card">
+            <a href="{{ url_for('article_detail', slug=article.slug) }}" class="article-card-link">
+                <p class="article-badge" style="margin-bottom: 10px; font-size: 0.75rem;">Featured story</p>
+                <h3 style="margin-bottom: 10px; font-size: 1.35rem;">{{ article.title }}</h3>
+                <p style="color: #475569; font-size: 0.95rem;">Tap in to read the full article and explore the latest match insights.</p>
             </a>
-            <a href="{{ url_for('article_detail', slug=article.slug) }}" style="display:inline-block; color:#667eea; font-weight:700;">Read article →</a>
-        </div>
+            <a href="{{ url_for('article_detail', slug=article.slug) }}" class="article-card-label">Read article →</a>
+        </article>
         {% endfor %}
     </div>
 </div>
