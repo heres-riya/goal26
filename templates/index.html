@@ -85,7 +85,7 @@
             </div>
         </div>
 
-        <div class="feedback-box">
+        <div class="feedback-box" data-match-id="{{ match.id }}">
             {% if match.id in voted_matches %}
                 <p class="feedback-label">Thanks for your input</p>
             {% else %}
@@ -108,4 +108,49 @@
 <div style="text-align: center; margin-top: 20px; color: #999; font-size: 12px;">
     Version 8
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle feedback form submissions with AJAX
+    const feedbackForms = document.querySelectorAll('.feedback-form');
+    
+    feedbackForms.forEach(form => {
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const matchId = this.querySelector('input[name="match_id"]').value;
+            const feedback = e.submitter.value; // Gets the value of the clicked button
+            
+            try {
+                const response = await fetch('{{ url_for("submit_feedback") }}', {
+                    method: 'POST',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: new URLSearchParams({
+                        'match_id': matchId,
+                        'feedback': feedback
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    // Update the feedback box
+                    const feedbackBox = document.querySelector(`[data-match-id="${matchId}"]`);
+                    feedbackBox.innerHTML = `
+                        <p class="feedback-label">Thanks for your input</p>
+                        <p class="feedback-note">Your input will improve the next model</p>
+                    `;
+                } else {
+                    console.error('Feedback submission failed:', data.error);
+                }
+            } catch (error) {
+                console.error('Error submitting feedback:', error);
+            }
+        });
+    });
+});
+</script>
 {% endblock %}

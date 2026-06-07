@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, session, abort, send_from_directory
+from flask import Flask, render_template, request, redirect, session, abort, send_from_directory, jsonify
 from flask_sqlalchemy import SQLAlchemy
 import markdown
 from markupsafe import Markup
@@ -245,6 +245,8 @@ def submit_feedback():
     feedback = request.form.get('feedback')
 
     if not match_id or feedback not in ('agree', 'disagree'):
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return jsonify({'success': False, 'error': 'Invalid request'}), 400
         return redirect('/')
 
     forwarded_for = request.headers.get('X-Forwarded-For')
@@ -252,6 +254,8 @@ def submit_feedback():
 
     voted_matches = set(session.get('voted_matches', []))
     if match_id in voted_matches:
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return jsonify({'success': False, 'error': 'Already voted'}), 400
         return redirect('/')
 
     existing = MatchFeedback.query.filter_by(match_id=match_id).first()
@@ -265,6 +269,9 @@ def submit_feedback():
     voted_matches.add(match_id)
     session['voted_matches'] = list(voted_matches)
     session.modified = True
+    
+    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        return jsonify({'success': True, 'message': 'Thanks for your input'})
     return redirect('/')
 
 if __name__ == '__main__':
