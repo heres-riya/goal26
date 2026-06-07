@@ -13,6 +13,7 @@
         <a href="#semis-final" style="color: #fff; text-decoration: none; padding: 8px 15px; background: rgba(255, 255, 255, 0.2); border-radius: 5px; transition: all 0.3s ease; font-size: 13px;" onmouseover="this.style.background='rgba(255, 255, 255, 0.3)'" onmouseout="this.style.background='rgba(255, 255, 255, 0.2)'">Semis & Final</a>
     </div>
 </div>
+
 {% if articles %}
 <div class="articles-section" style="margin-bottom: 40px;">
     <h2 style="color: #fff; margin-bottom: 20px;">Latest Articles</h2>
@@ -28,18 +29,13 @@
 </div>
 {% endif %}
 
-<div class="matches-grid">
-    {% set ns = namespace(prev_group=None) %}
-    {% for match in matches %}
-    {% if match.group != ns.prev_group and not match.group_is_group %}
-    <div class="group-heading" style="grid-column: 1 / -1; background: linear-gradient(to right, #1a1a1a 0%, #2a2a2a 50%, #1a1a1a 100%); padding: 20px; margin: 20px 0 10px 0; text-align: center; font-size: 24px; font-weight: bold; color: #fff; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">{{ match.group }}</div>
-    {% set ns.prev_group = match.group %}
-    {% endif %}
-    <div class="match-card {% if match.prediction %}submitted{% endif %} {% if match.prediction and match.actual_result %}{% if match.prediction == match.actual_result %}correct{% else %}incorrect{% endif %}{% endif %}">
-        <div class="match id="round-32">
+<div class="matches-grid" id="round-32">
     {% set ns = namespace(prev_group=None, first_knockout=False) %}
     {% for match in matches %}
     {% if not match.group_is_group and not ns.first_knockout %}
+        {% set ns.first_knockout = True %}
+    {% endif %}
+    {% if match.group != ns.prev_group and not match.group_is_group %}
         {% if match.group == 'Round of 16' %}
     </div>
     <div class="matches-grid" id="round-16">
@@ -50,8 +46,13 @@
     </div>
     <div class="matches-grid" id="semis-final">
         {% endif %}
-        {% set ns.first_knockout = True %}
-    {% endifte_dt.strftime('%a, %d %b %Y') if match.date_dt else match.date }}
+    <div class="group-heading" style="grid-column: 1 / -1; background: linear-gradient(to right, #1a1a1a 0%, #2a2a2a 50%, #1a1a1a 100%); padding: 20px; margin: 20px 0 10px 0; text-align: center; font-size: 24px; font-weight: bold; color: #fff; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">{{ match.group }}</div>
+    {% set ns.prev_group = match.group %}
+    {% endif %}
+    <div class="match-card {% if match.prediction %}submitted{% endif %} {% if match.prediction and match.actual_result %}{% if match.prediction == match.actual_result %}correct{% else %}incorrect{% endif %}{% endif %}">
+        <div class="match-info">
+            <div class="match-date">
+                {{ match.date_dt.strftime('%a, %d %b %Y') if match.date_dt else match.date }}
                 · {{ match.match_number }}
                 ·  {{ match.group }}
             </div>
