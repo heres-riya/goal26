@@ -114,10 +114,10 @@
             {% if match.id in voted_matches %}
                 <p class="feedback-label">Thanks for your input</p>
             {% else %}
-                <p class="feedback-label">Do you agree?</p>
+                <p class="feedback-label"><a href ="https://forms.gle/Uexyh5Gso2YjGBAJA">Click to tell us if you agree</a></p>
             {% endif %}
             {% if match.id in voted_matches %}
-                <p class="feedback-note">Your input will improve the next model</p>
+                <p class="feedback-note">Thanks.<a href ="https://forms.gle/Uexyh5Gso2YjGBAJA">Click to win $50 by predicting</a></p>
             {% else %}
                 <form action="{{ url_for('submit_feedback') }}" method="post" class="feedback-form">
                     <input type="hidden" name="match_id" value="{{ match.id }}">
