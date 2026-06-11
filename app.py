@@ -87,7 +87,7 @@ class Player(db.Model):
 
 # Define Match model
 class Match(db.Model):
-    __tablename__ = 'matches2'
+    __tablename__ = 'matches'
     id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.String(255))
     match_number = db.Column(db.String(50), unique=True)
