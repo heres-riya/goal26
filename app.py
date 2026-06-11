@@ -87,10 +87,7 @@ class Player(db.Model):
 
 # Define Match model
 class Match(db.Model):
-    __tablename__ = 'matches'
-    
-    __table_args__ = {'extend_existing': True}
-
+    __tablename__ = 'matches2'
     id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.String(255))
     match_number = db.Column(db.String(50), unique=True)
@@ -136,21 +133,13 @@ class Article(db.Model):
     def __repr__(self):
         return f'<Article {self.slug}>'
 
-
 @app.route('/')
 def index():
     """Display the homepage with published articles plus match predictions."""
     try:
         articles = Article.query.filter_by(published=True).order_by(Article.created_at.desc()).limit(5).all()
 
-        query = Match.query.filter(Match.id < 208)
-
-        if request.args.get('version') == 'crowd':
-            crowd_table = db.Table('matches2', db.metadata, autoload_with=db.engine)
-            query = query.with_options(db.ExecutionOptions(bind_arguments={Match.__table__: crowd_table}))
-
-        matches = query.order_by(Match.id).all()
-
+        matches = Match.query.filter(Match.id < 208).order_by(Match.id).all()
         for match in matches:
             match.team1_flag_url = COUNTRY_FLAGS.get(match.team1)
             match.team2_flag_url = COUNTRY_FLAGS.get(match.team2)
