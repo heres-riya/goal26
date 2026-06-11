@@ -133,6 +133,7 @@ class Article(db.Model):
     def __repr__(self):
         return f'<Article {self.slug}>'
 
+
 @app.route('/')
 def index():
     """Display the homepage with published articles plus match predictions."""
