@@ -137,25 +137,20 @@ class Article(db.Model):
         return f'<Article {self.slug}>'
 
 
-from flask import request
-
-@app.before_request
-def route_match_table():
-    # Check if the URL contains version=crowd
-    if request.args.get('version') == 'crowd':
-        # Safely map the Match model to the 'matches2' table for this request only
-        crowd_table = db.Table('matches2', db.metadata, autoload_with=db.engine)
-        db.session.execute_options(
-            bind_arguments={Match.__table__: crowd_table}
-        )
-
 @app.route('/')
 def index():
     """Display the homepage with published articles plus match predictions."""
     try:
         articles = Article.query.filter_by(published=True).order_by(Article.created_at.desc()).limit(5).all()
 
-        matches = Match.query.filter(Match.id < 208).order_by(Match.id).all()
+        query = Match.query.filter(Match.id < 208)
+
+        if request.args.get('version') == 'crowd':
+            crowd_table = db.Table('matches2', db.metadata, autoload_with=db.engine)
+            query = query.with_options(db.ExecutionOptions(bind_arguments={Match.__table__: crowd_table}))
+
+        matches = query.order_by(Match.id).all()
+
         for match in matches:
             match.team1_flag_url = COUNTRY_FLAGS.get(match.team1)
             match.team2_flag_url = COUNTRY_FLAGS.get(match.team2)
