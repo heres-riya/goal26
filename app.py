@@ -104,6 +104,27 @@ class Match(db.Model):
         return f'<Match {self.match_number}>'
 
 
+# Your existing Match model remains untouched here...
+
+class Match2(db.Model):
+    __tablename__ = 'matches2'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    date = db.Column(db.String(255))
+    match_number = db.Column(db.String(50), unique=True)
+    team1 = db.Column(db.String(255))
+    team2 = db.Column(db.String(255))
+    group = db.Column(db.String(50))
+    stadium = db.Column(db.String(255))
+    date_dt = db.Column(db.Date)
+    win = db.Column(db.Numeric(precision=5, scale=2))
+    loss = db.Column(db.Numeric(precision=5, scale=2))
+    draw = db.Column(db.Numeric(precision=5, scale=2))
+
+    def __repr__(self):
+        return f'<Match2 {self.match_number}>'
+
+
 class MatchFeedback(db.Model):
     __tablename__ = 'match_feedback'
 
@@ -140,7 +161,13 @@ def index():
     try:
         articles = Article.query.filter_by(published=True).order_by(Article.created_at.desc()).limit(5).all()
 
-        matches = Match.query.filter(Match.id < 208).order_by(Match.id).all()
+
+        # Check if the user wants the crowd version
+        if request.args.get('version') == 'crowd':
+            matches = Match2.query.filter(Match2.id < 208).order_by(Match2.id).all()
+        else:
+            matches = Match.query.filter(Match.id < 208).order_by(Match.id).all()
+
         for match in matches:
             match.team1_flag_url = COUNTRY_FLAGS.get(match.team1)
             match.team2_flag_url = COUNTRY_FLAGS.get(match.team2)
