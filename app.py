@@ -88,6 +88,9 @@ class Player(db.Model):
 # Define Match model
 class Match(db.Model):
     __tablename__ = 'matches'
+    
+    __table_args__ = {'extend_existing': True}
+
     id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.String(255))
     match_number = db.Column(db.String(50), unique=True)
@@ -132,6 +135,19 @@ class Article(db.Model):
 
     def __repr__(self):
         return f'<Article {self.slug}>'
+
+
+from flask import request
+
+@app.before_request
+def route_match_table():
+    # Check if the URL contains version=crowd
+    if request.args.get('version') == 'crowd':
+        # Safely map the Match model to the 'matches2' table for this request only
+        crowd_table = db.Table('matches2', db.metadata, autoload_with=db.engine)
+        db.session.execute_options(
+            bind_arguments={Match.__table__: crowd_table}
+        )
 
 @app.route('/')
 def index():
