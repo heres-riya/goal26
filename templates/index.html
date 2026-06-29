@@ -113,7 +113,7 @@
         </div>
 
         <div class="feedback-box" data-match-id="{{ match.id }}">
-          {% if match.group_is_group %}
+          {% if not match.group_is_group %}
 
             {% if match.id in voted_matches %}
                 <p class="feedback-label">Thanks for your input</p>
