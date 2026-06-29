@@ -237,11 +237,15 @@ def index():
             71: False,
             72: True
         }
+
+        print(match)
+
         for match in matches:
             match.prediction = match_predictions.get(match.match_number, None)
             match.team1_flag_url = COUNTRY_FLAGS.get(match.team1)
             match.team2_flag_url = COUNTRY_FLAGS.get(match.team2)
             match.group_is_group = bool(match.group and match.group.strip().startswith('Group'))
+        print(match)
 
         feedback_map = {
             item.match_id: item.feedback
