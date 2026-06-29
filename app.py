@@ -161,12 +161,7 @@ def index():
     try:
         articles = Article.query.filter_by(published=True).order_by(Article.created_at.desc()).limit(5).all()
 
-
-        # Check if the user wants the crowd version
-        if request.args.get('version') == 'crowd':
-            matches = Match2.query.filter(Match2.id < 208).order_by(Match2.id).all()
-        else:
-            matches = Match.query.filter(Match.id < 208).order_by(Match.id).all()
+        matches = Match.query.filter(Match.id < 208).order_by(Match.id).all()
 
         for match in matches:
             match.team1_flag_url = COUNTRY_FLAGS.get(match.team1)
