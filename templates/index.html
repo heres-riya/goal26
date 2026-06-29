@@ -130,7 +130,13 @@
                 </form>
             {% endif %}
           {% else %}
-                <p class="feedback-label"> {{ match.id }} : {{ match.match_number }} : Debug: {{ match.debug1 }} Correct: {{ match.prediction }}</p>
+
+                {% if match.prediction == True %}
+                    <p class="feedback-label success">Our Prediction was CORRECT !! </p>
+                {% else %}
+                    <p class="feedback-label error">Our Prediction was wrong !! </p>
+                {% endif %}
+
           {% endif %}
 
         </div>
