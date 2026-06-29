@@ -31,7 +31,6 @@
 {% endif %}
 
 
-<p>{{ matches }}</p>
 
 <div class="matches-grid" id="round-32">
     {% set ns = namespace(prev_group=None, first_knockout=False) %}
@@ -131,7 +130,7 @@
                 </form>
             {% endif %}
           {% else %}
-                <p class="feedback-label"> {{ match.id }} : {{ match.match_number }} : Correct: {{ match.prediction }}</p>
+                <p class="feedback-label"> {{ match.id }} : {{ match.match_number }} : {{ match.debug1 }} Correct: {{ match.prediction }}</p>
           {% endif %}
 
         </div>
