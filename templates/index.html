@@ -113,7 +113,7 @@
         </div>
 
         <div class="feedback-box" data-match-id="{{ match.id }}">
-          {% if not match.group_is_group %}
+          {% if match.id > 50 %}
 
             {% if match.id in voted_matches %}
                 <p class="feedback-label">Thanks for your input</p>
@@ -132,9 +132,9 @@
           {% else %}
 
                 {% if match.prediction == True %}
-                    <p class="feedback-label success">Goal26 prediction was correct !! </p>
+                    <p class="feedback-label success">Goal26 prediction was correct !!  {{ match.group }} {{ match.group_is_group }}</p>
                 {% else %}
-                    <p class="feedback-label error">Goal26 prediction was wrong !! </p>
+                    <p class="feedback-label error">Goal26 prediction was wrong !!  {{ match.group }} {{ match.group_is_group }} </p>
                 {% endif %}
 
           {% endif %}
