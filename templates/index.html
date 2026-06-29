@@ -111,7 +111,7 @@
         </div>
 
         <div class="feedback-box" data-match-id="{{ match.id }}">
-          {% if match.id <= 72 %}
+          {% if match.id > 72 %}
 
             {% if match.id in voted_matches %}
                 <p class="feedback-label">Thanks for your input</p>
@@ -127,6 +127,8 @@
                     <button type="submit" name="feedback" value="disagree" class="feedback-btn disagree-btn" aria-label="Disagree with this outlook">👎</button>
                 </form>
             {% endif %}
+          {% else %}
+                <p class="feedback-label">Correct: {{ match.match.prediction }}</p>
           {% endif %}
 
         </div>
