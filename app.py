@@ -238,7 +238,7 @@ def index():
             72: True
         }
         for match in matches:
-            match.prediction = match_predictions.get(match.id, None)
+            match.prediction = match_predictions.get(match.match_number, None)
             match.team1_flag_url = COUNTRY_FLAGS.get(match.team1)
             match.team2_flag_url = COUNTRY_FLAGS.get(match.team2)
             match.group_is_group = bool(match.group and match.group.strip().startswith('Group'))
