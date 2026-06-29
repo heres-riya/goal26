@@ -132,9 +132,9 @@
           {% else %}
 
                 {% if match.prediction == True %}
-                    <p class="feedback-label success">Goal26 prediction was correct !! </p>
+                    <p class="feedback-label success">Goal26 prediction was correct !! {{ match.id and match.match_number}} </p>
                 {% else %}
-                    <p class="feedback-label error">Goal26 prediction was wrong !! </p>
+                    <p class="feedback-label error">Goal26 prediction was wrong !!  {{ match.id and match.match_number}} </p>
                 {% endif %}
 
           {% endif %}
