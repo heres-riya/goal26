@@ -4,12 +4,12 @@ A Flask web application using SQLAlchemy ORM to connect to PostgreSQL and displa
 
 ## Features
 
-- ⚽ Flask web framework with SQLAlchemy ORM
-- 🗄️ PostgreSQL database integration
-- 📊 View all players in a table
-- ➕ Add new players with form
-- 🎨 Beautiful, responsive UI
-- 🚀 Heroku ready (Procfile + runtime.txt included)
+- Flask web framework with SQLAlchemy ORM
+- PostgreSQL database integration
+- View all players in a table
+- Add new players with form
+- Beautiful, responsive UI
+- Heroku ready (Procfile + runtime.txt included)
 
 ## Project Structure
 
