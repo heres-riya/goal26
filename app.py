@@ -159,8 +159,8 @@ class Article(db.Model):
 def index():
     """Display the homepage with published articles plus match predictions."""
     try:
-        articles = Article.query.filter_by(published=True).order_by(Article.created_at.desc()).limit(5).all()
-
+        # articles = Article.query.filter_by(published=True).order_by(Article.created_at.desc()).limit(5).all()
+        articles = Article.query.filter_by(published=True).order_by(Article.id.asc()).limit(5).all()
         matches = Match.query.filter(Match.id < 208).order_by(Match.id).all()
 
         match_predictions = {
