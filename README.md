@@ -1,144 +1,43 @@
-# Flask + SQLAlchemy PostgreSQL App
+# ⚽ Goal 26 - FIFA World Cup 2026 Predictions 
 
-A Flask web application using SQLAlchemy ORM to connect to PostgreSQL and display player data. Designed to be deployed on Heroku.
+## Project Overview
+Goal26 is an independent data science and web-based application built to predict the outcomes of the FIFA 2026 World Cup pre-tournament. 
 
-## Features
+## Why This Project?
+Since fourth grade, I have played soccer myself in school. Around my earlier years of high school, I started watching more soccer games and attending MLS games. I would like to major in a field in technology, and I wanted to see how combining my passion of soccer and technology would go hand-in-hand. Also, I wanted to see how AI in data science may change the sports forecasting industry: how do humans and AI predictions compare and who is more accurate to true data?
 
-- Flask web framework with SQLAlchemy ORM
-- PostgreSQL database integration
-- View all players in a table
-- Add new players with form
-- Beautiful, responsive UI
-- Heroku ready (Procfile + runtime.txt included)
+## Key Features
+- **AI Match Predictions:** Using AI model, win, draw, and loss percentage probabilities are calculated for each predicted match.
+- **Round Jump-To Navigation:** Instead of having to scroll down to see different rounds of the tournament, just click the Jump to Round bar to go directly to the round (Round of 32, Round of 16, Quarterfinals, Semifinals, and Final).
+- **Match and Venue Details:** Match details, like stadium location, dates, country flag, different probabilities to win, draw, lose, and for group stages, whether AI was correct or not.
+- **Articles and Research:** Integrated different article feed about this project to educate those interested or potentially in sports analytics and AI, giving insight of tournament prediction insights, how to build a model, and my research paper. 
 
-## Project Structure
+## File Structure and Primary Functions
+### `goal26/templates/admin_submit.html`
+Allows one in the admin profile to submit articles on the webpage.
 
-```
-goal26/
-├── app.py                 # Main Flask application with SQLAlchemy models
-├── init_db.py            # Database initialization script
-├── requirements.txt       # Python dependencies
-├── Procfile              # Heroku process file
-├── runtime.txt           # Python version for Heroku
-├── .env.example          # Example environment variables
-└── templates/
-    ├── base.html         # Base template with styling
-    ├── index.html        # Players display page
-    └── create.html       # Add player form
-```
+### `goal26/templates/article_detail.html`
+Gives the default template of how articles should be displayed with fields like article name, description, and publish date.
 
-## Prerequisites
+### `goal26/templates/index.html`
+Used to display articles on page, jump-to feature to jump to specific tournament round matches (to avoid longscrolling), display match team and flag image, display model’s prediction per match with a win, draw, loss, and previously to collect user data on game result predictions.
 
-- Python 3.11+
-- PostgreSQL 12+
-- pip (Python package manager)
+### `goal26/.env.example`
+Serves as a template for setting up local environment variables and secret keys securely.
 
-## Local Setup
+### `goal26/app.py`
+Stores all the country’s flags for aesthetic purposes, creates a table in Match class to display each of the fields on the web page, as well as articles and previously whether a user agreed or disagreed with AI’s prediction, as well as an admin log-in to edit articles.
 
-1. **Create a virtual environment:**
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   ```
+### `goal26/matches.csv`
+Stores all of the FIFA 2026 World Cup matches in a table storing date, match_number, teams, group, stadium, and date_dt for game display on the page.
 
-2. **Install dependencies:**
-   ```bash
-   pip install -r requirements.txt
-   ```
+## Tech Stack
+- **Backend:** Python, Flask
+- **Frontend:** HTML, Templates, CSS
+- **Data and Storage:** CSV, SQL Database
+- **Deployment:** Heroku 
 
-3. **Configure environment variables:**
-   ```bash
-   cp .env.example .env
-   # Edit .env with your PostgreSQL credentials (local development)
-   # DATABASE_URL=postgresql://postgres:postgres@localhost:5432/postgres
-   ```
+## About Me
+I am a high school student and soccer enthusiast passionate about data science and artificial intelligence. I developed Goal26 to bridge machine learning analytics with real-world sports predictions.
 
-4. **Initialize the database:**
-   ```bash
-   python init_db.py
-   ```
 
-5. **Run the Flask app:**
-   ```bash
-   python app.py
-   ```
-
-6. **Open your browser:**
-   - Navigate to `http://localhost:5000`
-
-## Heroku Deployment
-
-1. **Create a Heroku app:**
-   ```bash
-   heroku create your-app-name
-   ```
-
-2. **Add PostgreSQL database:**
-   ```bash
-   heroku addons:create heroku-postgresql:hobby-dev
-   ```
-
-3. **Deploy code:**
-   ```bash
-   git push heroku main
-   ```
-
-4. **Initialize database:**
-   ```bash
-   heroku run python init_db.py -a your-app-name
-   ```
-
-5. **Open the app:**
-   ```bash
-   heroku open -a your-app-name
-   ```
-
-## Database Models
-
-### Player Table
-- `id` - Primary key
-- `name` - Player name (required)
-- `position` - Playing position (e.g., Forward, Midfielder)
-- `team` - Team name
-- `jersey_number` - Jersey number
-- `created_at` - Timestamp of creation
-
-## Routes
-
-- `GET /` - Display all players
-- `GET /create` - Show add player form
-- `POST /create` - Create a new player
-
-## Environment Variables
-
-```env
-# Heroku automatically sets DATABASE_URL
-# For local development:
-DATABASE_URL=postgresql://username:password@localhost:5432/dbname
-PORT=5000  # Optional, defaults to 5000
-```
-
-## Troubleshooting
-
-### Connection Error on Local
-- Ensure PostgreSQL is running
-- Check `DATABASE_URL` in `.env`
-- Verify database credentials
-
-### Error on Heroku
-- Check logs: `heroku logs --tail`
-- Ensure database addon is provisioned: `heroku addons`
-- Verify DATABASE_URL config var is set
-
-## Dependencies
-
-- **Flask** - Web framework
-- **Flask-SQLAlchemy** - SQLAlchemy integration
-- **SQLAlchemy** - ORM
-- **psycopg2-binary** - PostgreSQL adapter
-- **python-dotenv** - Environment variable management
-- **gunicorn** - Production WSGI server
-
-## License
-
-This project is open source and available for educational purposes.
