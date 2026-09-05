@@ -50,6 +50,6 @@ AI does not outpower humans, but neither do humans. In the sports analytics worl
 
 
 ## About Me
-I am a high school student and soccer enthusiast passionate about data science and artificial intelligence. I developed Goal26 to bridge machine learning analytics with real-world sports predictions.
+I am Riya Deb, a high school student and soccer enthusiast passionate about data science and artificial intelligence. I developed Goal26 to bridge machine learning analytics with real-world sports predictions.
 
 
