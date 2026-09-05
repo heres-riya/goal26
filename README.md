@@ -4,7 +4,7 @@
 Goal26 is an independent data science and web-based application built to predict the outcomes of the FIFA 2026 World Cup pre-tournament. 
 
 ## Why This Project?
-Since fourth grade, I have played soccer myself in school. Around my earlier years of high school, I started watching more soccer games and attending MLS games. I would like to major in a field in technology, and I wanted to see how combining my passion of soccer and technology would go hand-in-hand. Also, I wanted to see how AI in data science may change the sports forecasting industry: how do humans and AI predictions compare and who is more accurate to true data?
+Since fourth grade, I have played soccer myself in school. Around my earlier years of high school, I started watching more soccer games and attending MLS games. I would like to major in a field in technology, so I wanted to see how combining my passion of soccer and technology would go hand-in-hand. Also, I wanted to see how AI in data science may change the sports forecasting industry: how do humans and AI predictions compare and who is more accurate to true data—and what does this mean for the sports analytics world?
 
 ## Key Features
 - **AI Match Predictions:** Using AI model, win, draw, and loss percentage probabilities are calculated for each predicted match.
@@ -36,6 +36,18 @@ Stores all of the FIFA 2026 World Cup matches in a table storing date, match_num
 - **Frontend:** HTML, Templates, CSS
 - **Data and Storage:** CSV, SQL Database
 - **Deployment:** Heroku 
+
+## Data Collection and Filtering
+- **Match Data:** Gathered international football match data from a Kaggle dataset.
+- **User Predictions:** Collected over 50,000 human match predictions in partnership with WCpredictor.app through user submissions to study user predictions versus AI. 
+- **Data Filtering:** Filtered historical match data spanning from 1998 to 2026 and removed unnecessary fields before saving to `matches.csv`. 
+
+## What the Model Considers
+- **Fields:** FIFA ranking, Rolling form, Home field advantage for Host Countries
+
+## Conclusion
+AI does not outpower humans, but neither do humans. In the sports analytics world, AI might have better historical records and statistical accuracy, but humans bring the cheer, passion, and energy factor that no algorithm can replicate. In the future, I expect to see more AI integration for match probabilities.
+
 
 ## About Me
 I am a high school student and soccer enthusiast passionate about data science and artificial intelligence. I developed Goal26 to bridge machine learning analytics with real-world sports predictions.
