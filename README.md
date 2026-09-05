@@ -3,7 +3,10 @@
 ## Project Overview
 Goal26 is an independent data science and web-based application built to predict the outcomes of the FIFA 2026 World Cup pre-tournament. 
 
-> 🌟 **Featured Project:** This project was featured in the **Girls Who Code** newsletter!
+> 🌟 **Featured In & Press Coverage:**
+>  - Featured in the **Girls Who Code** newsletter!
+>  - Published in **AI Journal**
+>  - Featured across local newspapers
 
 ## Why This Project?
 Since fourth grade, I have played soccer myself in school. Around my earlier years of high school, I started watching more soccer games and attending MLS games. I would like to major in a field in technology, so I wanted to see how combining my passion of soccer and technology would go hand-in-hand. Also, I wanted to see how AI in data science may change the sports forecasting industry: how do humans and AI predictions compare and who is more accurate to true data—and what does this mean for the sports analytics world?
